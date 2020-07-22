@@ -1,12 +1,13 @@
 package com.itheima.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.itcast.utlis.DateFormatUtil;
+
 import com.itcast.utlis.POIUtils;
 import com.itheima.entity.MessageConstant;
 import com.itheima.entity.Result;
 import com.itheima.pojo.OrderSetting;
 import com.itheima.service.OrderSettingService;
+import com.itheima.untis.DateFormatUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -60,7 +61,7 @@ public class OrderSettingController {
             List<Map<String, Object>> data = new ArrayList<>();
             for (OrderSetting orderSetting : list) {
                 Map<String, Object> map = new HashMap<>();
-                map.put("date", DateFormatUtil.dateFormat("dd", orderSetting.getOrderDate()));
+                map.put("date", DateFormatUtil.dateFormatString("dd", orderSetting.getOrderDate()));
                 map.put("number", orderSetting.getNumber());
                 map.put("reservations", orderSetting.getReservations());
                 data.add(map);

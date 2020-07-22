@@ -8,7 +8,6 @@
     <artifactId>health_parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>test</module>
         <module>health_common</module>
         <module>health_dao</module>
         <module>health_interface</module>
@@ -37,7 +36,6 @@
         <jedis.version>2.9.0</jedis.version>
         <quartz.version>2.2.1</quartz.version>
         <hikariCP.version>3.3.1</hikariCP.version>
-
     </properties>
 
     <dependencyManagement>

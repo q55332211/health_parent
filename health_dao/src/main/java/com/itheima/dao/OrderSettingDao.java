@@ -22,4 +22,9 @@ public interface OrderSettingDao {
 
     void exitOrderSetting(OrderSetting orderSetting);
 
+    void exitReservationsByDate(Date date);
+
+    Integer getNumberByDate(Date date);
+
+    Integer getReservationsByDate(Date date);
 }

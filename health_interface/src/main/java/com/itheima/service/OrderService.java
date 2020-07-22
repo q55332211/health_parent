@@ -11,5 +11,7 @@ import java.util.Map;
  */
 public interface OrderService {
 
-    Result sumbit(Map order);
+    Result sumbit(Map map) throws Exception;
+
+    boolean findByDate(String date);
 }

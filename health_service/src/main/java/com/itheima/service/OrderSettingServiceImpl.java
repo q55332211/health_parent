@@ -5,6 +5,7 @@ import com.itheima.dao.OrderSettingDao;
 import com.itheima.pojo.OrderSetting;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,5 +53,24 @@ public class OrderSettingServiceImpl implements OrderSettingService {
             return;
         }
         this.orderSettingDao.add(orderSetting);
+    }
+
+    /**
+     * 更新预约添加一个预约人数
+     * @param date
+     */
+    @Override
+    public void exitReservationsByDate(Date date) {
+        this.orderSettingDao.exitReservationsByDate(date);
+    }
+
+    @Override
+    public Integer getNumberByDate(Date date) {
+        return this.orderSettingDao.getNumberByDate(date);
+    }
+
+    @Override
+    public Integer getReservationsByDate(Date date) {
+        return this.orderSettingDao.getReservationsByDate(date);
     }
 }

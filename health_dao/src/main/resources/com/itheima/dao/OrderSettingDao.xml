@@ -9,7 +9,7 @@
        select count(*) from t_ordersetting where orderDate=#{orderDate};
    </select>
     <!--插入数据-->
-    <insert id="add" parameterType="com.itheima.pojo.OrderSetting" >
+    <insert id="add" parameterType="com.itheima.pojo.OrderSetting">
         insert into t_ordersetting(orderDate,number,reservations)values(#{orderDate},#{number},#{reservations})
     </insert>
     <!--更新数据-->
@@ -24,5 +24,21 @@
     <update id="exitOrderSetting" parameterType="com.itheima.pojo.OrderSetting">
         update t_ordersetting set number =#{number} where orderDate=#{orderDate}
     </update>
+
+    <!--这里涉及到了线程安全问题-->
+    <update id="exitReservationsByDate" parameterType="java.util.Date">
+        update t_ordersetting set reservations = reservations + 1 where orderDate=#{orderDate} and reservations &lt; number
+    </update>
+
+    <!--查询当日可预约人数-->
+    <select id="getNumberByDate" parameterType="java.util.Date" resultType="int">
+        select number from t_ordersetting where  orderDate = #{date}
+    </select>
+
+    <!--查询当日以预约人数-->
+    <select id="getReservationsByDate" parameterType="java.util.Date" resultType="int">
+        select reservations from t_ordersetting where  orderDate = #{date}
+    </select>
+
 
 </mapper>
