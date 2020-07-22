@@ -1,0 +1,87 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.dao.CheckGroupDao">
+
+    <select id="findPage" parameterType="string" resultType="com.itheima.pojo.CheckGroup">
+        select * from t_checkgroup
+        <if test="value != null and value.length > 0">
+            where code = #{value} or name = #{value} or helpCode = #{value}
+        </if>
+    </select>
+
+    <insert id="add" parameterType="com.itheima.pojo.CheckGroup">
+        <!-- 更新后返回id -->
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into t_checkgroup(code,name,helpCode,sex,remark,attention)
+        value(#{code},#{name},#{helpCode},#{sex},#{remark},#{attention})
+    </insert>
+
+
+    <insert id="setCheckGroupAndCheckItem" parameterType="map">
+        <!-- 更新后返回id -->
+        insert into t_checkgroup_checkitem(checkgroup_id,checkitem_id) values(#{groupId},#{checkitemId});
+    </insert>
+
+    <select id="findById" resultType="com.itheima.pojo.CheckGroup" parameterType="int">
+        select * from t_checkgroup where id=#{id};
+    </select>
+
+    <!--根据检查组id查询所选检查项-->
+    <select id="findCheckItemsById" resultType="int" parameterType="int">
+        select checkitem_id from t_checkgroup_checkitem where checkgroup_id=#{id};
+    </select>
+
+    <update id="update" parameterType="com.itheima.pojo.CheckGroup">
+        update t_checkgroup
+        <set>
+            <if test="code!= null">
+                code=#{code},
+            </if>
+            <if test="name != null ">
+                name=#{name},
+            </if>
+            <if test="helpCode!= null">
+                helpCode=#{helpCode},
+            </if>
+            <if test="sex != null ">
+                sex=#{sex},
+            </if>
+            <if test="remark!= null">
+                remark=#{remark},
+            </if>
+            <if test="attention != null ">
+                attention=#{attention},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!--/*根据检查组ID删除关联数据*/-->
+    <delete id="deleteCheckItemById" parameterType="int">
+      delete from t_checkgroup_checkitem where checkgroup_id = #{id};
+    </delete>
+
+    <delete id="deleteCheckGroupById" parameterType="int">
+        delete from t_checkgroup where id = #{id};
+      </delete>
+
+    <select id="findAll" resultType="com.itheima.pojo.CheckGroup">
+        select * from t_checkgroup;
+    </select>
+
+    <select id="queryCheckGroupsBySid" resultType="com.itheima.pojo.CheckGroup">
+       select * from t_checkgroup cg LEFT JOIN t_setmeal_checkgroup sc
+			on sc.checkgroup_id=cg.id
+			where sc.setmeal_id =#{sid}
+    </select>
+
+    <select id="queryCheckGroupIds" parameterType="int" resultType="int">
+      	select t_setmeal_checkgroup.checkgroup_id as sid from t_setmeal_checkgroup
+          where t_setmeal_checkgroup.setmeal_id=#{sid}
+    </select>
+
+</mapper>

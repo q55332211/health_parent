@@ -1,0 +1,80 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.dao.CheckItemDao">
+
+    <sql id="selectAll">
+        select * from t_checkitem
+    </sql>
+    <!--添加检查项-->
+    <insert id="save" parameterType="com.itheima.pojo.CheckItem">
+       insert into t_checkitem values(null ,#{code},#{name},#{sex},#{age},#{price},#{type},#{remark},#{attention})
+    </insert>
+
+    <select id="selectByCondition" parameterType="string" resultType="com.itheima.pojo.CheckItem">
+        select * from t_checkitem
+        <if test="value != null and value.length > 0">
+            where code = #{value} or name = #{value}
+        </if>
+    </select>
+
+    <!--更新检查项-->
+    <update id="update" parameterType="com.itheima.pojo.CheckItem">
+        update t_checkitem
+        <set>
+            <if test="code != null">
+                code=#{code},
+            </if>
+            <if test="name != null">
+                name=#{name},
+            </if>
+            <if test="sex != null">
+                sex=#{sex},
+            </if>
+            <if test="age != null">
+                age=#{age},
+            </if>
+            <if test="price != null">
+                price=#{price},
+            </if>
+            <if test="type != null">
+                type=#{type},
+            </if>
+            <if test="remark != null">
+                remark=#{remark},
+            </if>
+            <if test="attention != null">
+                attention=#{attention},
+            </if>
+        </set>
+        <where>
+            id=#{id}
+        </where>
+    </update>
+    <!--删除检查项-->
+    <delete id="deleteById" parameterType="int">
+         delete from t_checkitem where id=#{value}
+    </delete>
+
+    <!--查询所有-->
+    <select id="findAll" resultType="com.itheima.pojo.CheckItem">
+        <include refid="selectAll"/>
+    </select>
+
+    <select id="queryByGid" resultType="com.itheima.pojo.CheckItem" parameterType="int">
+        select item.* from t_checkgroup_checkitem as cc LEFT JOIN T_checkitem as item
+          on item.id=cc.checkitem_id
+          where cc.checkgroup_id=#{gid}
+    </select>
+
+    <select id="queryByGids" resultType="com.itheima.pojo.CheckItem" parameterType="int">
+        select item.* from t_checkgroup_checkitem as cc JOIN T_checkitem as item
+        on item.id=cc.checkitem_id
+        where cc.checkgroup_id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>

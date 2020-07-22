@@ -1,0 +1,28 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.dao.OrderSettingDao">
+
+    <!--根据日期查找-->
+    <select id="findByDate" parameterType="java.util.Date" resultType="long">
+       select count(*) from t_ordersetting where orderDate=#{orderDate};
+   </select>
+    <!--插入数据-->
+    <insert id="add" parameterType="com.itheima.pojo.OrderSetting" >
+        insert into t_ordersetting(orderDate,number,reservations)values(#{orderDate},#{number},#{reservations})
+    </insert>
+    <!--更新数据-->
+    <update id="update" parameterType="com.itheima.pojo.OrderSetting">
+        update t_ordersetting set number =#{number} where orderDate=#{orderDate}
+    </update>
+    <!--根据当前月份查询-->
+    <select id="findOrderSettingByMothe" parameterType="string" resultType="com.itheima.pojo.OrderSetting">
+        select * from t_ordersetting where orderDate like #{orderDate}"%";
+    </select>
+
+    <update id="exitOrderSetting" parameterType="com.itheima.pojo.OrderSetting">
+        update t_ordersetting set number =#{number} where orderDate=#{orderDate}
+    </update>
+
+</mapper>
