@@ -27,4 +27,7 @@ public interface OrderSettingDao {
     Integer getNumberByDate(Date date);
 
     Integer getReservationsByDate(Date date);
+
+    OrderSetting getOrderSettingByDate(Date date);
+
 }

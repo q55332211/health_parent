@@ -2,20 +2,21 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itheima.dao.OrderdDao">
-    <select id="add" parameterType="com.itheima.pojo.Order">
-        insert into t_order(memberId,orderDate,orderType,orderStatus,fsetmealId)
+<mapper namespace="com.itheima.dao.OrderDao">
+
+    <insert id="add" parameterType="com.itheima.pojo.Order">
+        insert into t_order(member_id,orderDate,orderType,orderStatus,setmeal_id)
                   values (#{memberId},#{orderDate},#{orderType},#{orderStatus},#{setmealId})
-    </select>
+    </insert>
 
     <!--根据日期查询-->
     <select id="findByDate" parameterType="Date" resultType="long">
       select count(id) from t_order where orderDate = #{date}
     </select>
 
-    <!--根据日期查询-->
-    <select id="getOrderByMidAndSid" parameterType="map" resultType="long">
-      select count(id) from t_order where member_id = #{memberId} and setmeal_id=#{setmealId}
+    <!--根据memberId和setmealId查询是否已经预约到-->
+    <select id="getOrder" parameterType="com.itheima.pojo.Order" resultType="long" >
+      select count(id) from t_order where orderDate=#{orderDate} and member_id = #{memberId} and setmeal_id=#{setmealId}
     </select>
 
 </mapper>

@@ -21,7 +21,7 @@ public interface OrderSettingService {
 
     void exitReservationsByDate(Date date);
 
-    Integer getNumberByDate(Date date);
+    //根据日期查询一个预约设置
+    OrderSetting getOrderSettingByDate(Date date);
 
-    Integer getReservationsByDate(Date date);
 }

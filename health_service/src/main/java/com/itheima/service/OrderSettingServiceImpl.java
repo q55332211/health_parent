@@ -57,6 +57,7 @@ public class OrderSettingServiceImpl implements OrderSettingService {
 
     /**
      * 更新预约添加一个预约人数
+     *
      * @param date
      */
     @Override
@@ -65,12 +66,8 @@ public class OrderSettingServiceImpl implements OrderSettingService {
     }
 
     @Override
-    public Integer getNumberByDate(Date date) {
-        return this.orderSettingDao.getNumberByDate(date);
+    public OrderSetting getOrderSettingByDate(Date date) {
+        return this.orderSettingDao.getOrderSettingByDate(date);
     }
 
-    @Override
-    public Integer getReservationsByDate(Date date) {
-        return this.orderSettingDao.getReservationsByDate(date);
-    }
 }

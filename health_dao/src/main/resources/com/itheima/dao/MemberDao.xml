@@ -7,4 +7,13 @@
     <select id="findByPhone" parameterType="String" resultType="com.itheima.pojo.Member">
       select * from t_member where phoneNumber = #{phone}
     </select>
+
+    <insert id="add" parameterType="com.itheima.pojo.Member">
+        <selectKey resultType="int" order="AFTER" keyProperty="id">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into t_member(name,sex,idCard,phoneNumber,regTime)
+        values(#{name},#{sex},#{idCard},#{phoneNumber},#{regTime})
+    </insert>
+
 </mapper>

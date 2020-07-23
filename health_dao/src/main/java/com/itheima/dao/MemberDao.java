@@ -9,7 +9,8 @@ import java.util.Map;
  * @Date: Create in 14:29 2020/7/22
  */
 public interface MemberDao {
+
     Member findByPhone(String phone);
 
-    Integer add(Map map);
+    void add(Member member);
 }

@@ -12,6 +12,6 @@ public interface MemberService {
 
     Member findByPhone(String phone);
 
-    Integer add(Map map);
+    void add(Member member);
 
 }

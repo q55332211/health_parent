@@ -15,7 +15,6 @@ import java.util.Map;
  */
 @Service(interfaceClass = MemberService.class)
 public class MemberServiceImpl implements MemberService {
-
     @Autowired
     private MemberDao memberdao;
 
@@ -30,11 +29,11 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 添加一个用户
      *
-     * @param map
+     * @param
      * @return
      */
     @Override
-    public Integer add(Map map) {
-        return this.memberdao.add(map);
+    public void add(Member member) {
+        this.memberdao.add(member);
     }
 }
