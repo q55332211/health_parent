@@ -14,4 +14,6 @@ public interface OrderService {
     Result sumbit(Map map) throws Exception;
 
     boolean findByDate(String date);
+
+    Map<String, Object> getOrderById(Integer id);
 }

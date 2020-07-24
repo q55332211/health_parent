@@ -14,6 +14,9 @@ public interface OrderDao {
 
     long findByDate(String date);
 
-   /* 根据用户id以及套餐id查询，防止重复提交*/
+    /* 根据用户id以及套餐id查询，防止重复提交*/
     long getOrder(Order order);
+
+    /*根据id查询订单*/
+    Map<String, Object> getOrderById(Integer id);
 }

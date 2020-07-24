@@ -13,4 +13,6 @@ public interface MemberDao {
     Member findByPhone(String phone);
 
     void add(Member member);
+
+    Member findById(int id);
 }

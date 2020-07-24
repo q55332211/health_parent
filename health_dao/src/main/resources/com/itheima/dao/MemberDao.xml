@@ -16,4 +16,8 @@
         values(#{name},#{sex},#{idCard},#{phoneNumber},#{regTime})
     </insert>
 
+    <select id="findById" parameterType="int" resultType="com.itheima.pojo.Member">
+      select * from t_member where id=#{id}
+    </select>
+
 </mapper>

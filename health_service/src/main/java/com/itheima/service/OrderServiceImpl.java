@@ -3,10 +3,12 @@ package com.itheima.service;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.itheima.dao.OrderDao;
 import com.itheima.entity.MessageConstant;
+import com.itheima.entity.RedisMessageConstant;
 import com.itheima.entity.Result;
 import com.itheima.pojo.Member;
 import com.itheima.pojo.Order;
 import com.itheima.pojo.OrderSetting;
+import com.itheima.pojo.Setmeal;
 import com.itheima.untis.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,6 +28,9 @@ public class OrderServiceImpl implements OrderService {
     private OrderSettingService orderSettingService;
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private SetmealService setmealService;
 
     /***
      * 提交预约/ 好坑爹的业务
@@ -87,6 +92,24 @@ public class OrderServiceImpl implements OrderService {
     public boolean findByDate(String date) {
         long count = this.orderDao.findByDate(date);
         return 1 == count;
+    }
+
+    /**
+     * 根据id查询
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Map<String, Object> getOrderById(Integer id) {
+        Map<String, Object> map = this.orderDao.getOrderById(id);
+        Integer setmealId = Integer.parseInt(map.get("setmeal_id").toString());
+        Setmeal setmeal = this.setmealService.findById(setmealId);
+        map.put("setmeal", setmeal.getName());
+        String memberId = map.get("member_id").toString();
+        Member member = this.memberService.findByid(Integer.parseInt(memberId));
+        map.put("member", member.getName());
+        return map;
     }
 
 }

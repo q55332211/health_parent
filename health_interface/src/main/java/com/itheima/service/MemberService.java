@@ -14,4 +14,5 @@ public interface MemberService {
 
     void add(Member member);
 
+    Member findByid(int parseInt);
 }

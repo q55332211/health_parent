@@ -36,4 +36,9 @@ public class MemberServiceImpl implements MemberService {
     public void add(Member member) {
         this.memberdao.add(member);
     }
+
+    @Override
+    public Member findByid(int id) {
+        return this.memberdao.findById(id);
+    }
 }
