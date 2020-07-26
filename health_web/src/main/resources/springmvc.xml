@@ -18,7 +18,9 @@
                 <property name="supportedMediaTypes" value="application/json"/>
                 <property name="features">
                     <list>
+                        <!--允许为空-->
                         <value>WriteMapNullValue</value>
+                        <!--日期转换-->
                         <value>WriteDateUseDateFormat</value>
                     </list>
                 </property>
@@ -46,4 +48,5 @@
     </bean>
 
     <mvc:default-servlet-handler/>
+    <import resource="classpath:spring-security.xml"/>
 </beans>

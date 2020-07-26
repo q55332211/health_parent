@@ -42,6 +42,6 @@
         <aop:advisor advice-ref="adviceId" pointcut-ref="pointcut"/>
     </aop:config>
 
-    <jdbc:embedded-database id="dataSource"/>
-
+    <!--<jdbc:embedded-database id="dataSource"/>-->
+<import resource="classpath:applicationContext-dao.xml"/>
 </beans>

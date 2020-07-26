@@ -38,8 +38,6 @@ public class TestAll {
     @Reference
     private SetmealService setmealService;
 
-    @Autowired
-    private OrderDao orderDao;
 
     @Test
     public void tset() {
@@ -62,7 +60,7 @@ public class TestAll {
         order.setOrderDate(date);
         order.setSetmealId(12);
         order.setSetmealId(84);
-        long count = orderDao.getOrder(order);
+
     }
 
 

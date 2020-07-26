@@ -1,0 +1,27 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.dao.UserDao">
+
+    <!--根据用户名查询用户信息-->
+    <select id="findUserByName" resultType="com.itheima.pojo.User" parameterType="string">
+       select * from t_user where username=#{username}
+   </select>
+
+    <!--根据用户id查询角色-->
+    <select id="findRolesById" parameterType="int" resultType="com.itheima.pojo.Role">
+        select t_role.* from  t_user_role as ur join t_role on ur.role_id =t_role.id where ur.user_id=#{id}
+    </select>
+
+    <!--根据角色id集合查询角色权限-->
+    <select id="findPermissionsInRoles" parameterType="int" resultType="com.itheima.pojo.Permission">
+        SELECT t_permission.* FROM t_permission join t_role_permission as rp ON rp.permission_id =t_permission.id
+        WHERE
+        rp.role_id in
+        <foreach collection="list" open="(" separator="," close=")" item="var">
+            ${var}
+        </foreach>
+    </select>
+
+</mapper>
