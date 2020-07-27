@@ -7,6 +7,7 @@ import com.itheima.pojo.Setmeal;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -29,5 +30,5 @@ public interface SetmealService {
 
     Setmeal findBaseSemealById(Integer id);
 
-
+    List<Map<String, Object>> findSetmealCount();
 }

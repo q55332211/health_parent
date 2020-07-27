@@ -328,7 +328,7 @@
 
                 this.dialogFormVisible = true;
                 //查询回显所有检查组
-                axios.get("/checkgroup/findAll.do").then((res) => {
+                 .get("/checkgroup/findAll.do").then((res) => {
                     if (res.data.flag) {
                         this.tableData = res.data.data;
                     } else {

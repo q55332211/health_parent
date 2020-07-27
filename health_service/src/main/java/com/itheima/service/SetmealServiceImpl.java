@@ -88,6 +88,11 @@ public class SetmealServiceImpl implements SetmealService {
         return this.setmealDao.findById(id);
     }
 
+    @Override
+    public List<Map<String, Object>> findSetmealCount() {
+        return this.setmealDao.findSetmealCount();
+    }
+
 
     public Setmeal toFor(Integer id) {
         //通过套餐id查询检查组

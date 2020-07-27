@@ -15,4 +15,6 @@ public interface MemberService {
     void add(Member member);
 
     Member findByid(int parseInt);
+
+    Integer getCountByMoth(String month);
 }

@@ -1,10 +1,13 @@
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.dao.UserDao;
 import com.itheima.pojo.Permission;
 import com.itheima.pojo.Role;
 import com.itheima.pojo.User;
+import com.itheima.service.ReportService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -20,9 +23,9 @@ import java.util.Set;
 @ContextConfiguration("classpath:applicationContext-tx.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestService {
-
     @Autowired
     private UserDao userdao;
+
 
     @Test
     public void testfindUserByName() {
@@ -44,7 +47,17 @@ public class TestService {
         rids.add(2);
         rids.add(3);
         Set<Permission> roles = userdao.findPermissionsInRoles(rids);
+
+
         System.out.println(roles);
     }
+
+    @Test
+    public void createPassword() {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String admin = bCryptPasswordEncoder.encode("admin");
+        System.out.println(admin);
+    }
+
 
 }

@@ -33,19 +33,10 @@
         select * from t_setmeal where id=#{id}
     </select>
 
-    <resultMap id="MetmealMap" type="com.itheima.pojo.Setmeal">
-        <id column="id" property="id"/>
-        <result column="name" property="name"/>
-        <result column="code" property="code"/>
-        <result column="helpCode" property="helpCode"/>
-        <result column="sex" property="sex"/>
-        <result column="price" property="price"/>
-        <result column="remark" property="memark"/>
-        <result column="attention" property="attention"/>
-        <result column="img" property="img"/>
-        <collection property="checkGroups" ofType="com.itheima.pojo.CheckGroup">
+    <select id="findSetmealCount" resultType="map">
+        SELECT count(1) value,t_setmeal.name FROM t_setmeal JOIN t_order  ON t_setmeal.id = t_order.setmeal_id  GROUP BY t_setmeal.id
+    </select>
 
-        </collection>
-    </resultMap>
+
 
 </mapper>

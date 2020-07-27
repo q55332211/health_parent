@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.Set;
  * @Description:
  * @Date: Create in 16:22 2020/7/26
  */
+@Component
 public class SpringSecurityUserService implements UserDetailsService {
 
     @Reference
@@ -42,7 +44,8 @@ public class SpringSecurityUserService implements UserDetailsService {
         //根据用户角色查询用户权限
         Set<Permission> permissions = this.userService.findPermissionsInRoles(rids);
         for (Permission permission : permissions) {
-            list.add(new SimpleGrantedAuthority(permission.getKeyword()));        }
+            list.add(new SimpleGrantedAuthority(permission.getKeyword()));
+        }
         System.out.println("success");
         return new User(username, dbUser.getPassword(), list);
     }

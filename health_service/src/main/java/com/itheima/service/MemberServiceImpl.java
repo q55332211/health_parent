@@ -41,4 +41,9 @@ public class MemberServiceImpl implements MemberService {
     public Member findByid(int id) {
         return this.memberdao.findById(id);
     }
+
+    @Override
+    public Integer getCountByMoth(String month) {
+        return this.memberdao.getCountByMoth(month);
+    }
 }

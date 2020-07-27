@@ -20,4 +20,8 @@
       select * from t_member where id=#{id}
     </select>
 
+    <select id="getCountByMoth" parameterType="string" resultType="int">
+      select count(1) from t_member where regTime &lt; #{month}
+    </select>
+
 </mapper>

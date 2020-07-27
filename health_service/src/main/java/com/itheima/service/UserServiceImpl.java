@@ -1,5 +1,6 @@
 package com.itheima.service;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.itheima.dao.UserDao;
 import com.itheima.pojo.Permission;
 import com.itheima.pojo.Role;
@@ -14,6 +15,7 @@ import java.util.Set;
  * @Description:
  * @Date: Create in 17:47 2020/7/26
  */
+@Service(interfaceClass = UserService.class)
 public class UserServiceImpl implements UserService {
 
     @Autowired

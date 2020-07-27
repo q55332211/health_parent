@@ -23,30 +23,14 @@
     <update id="update" parameterType="com.itheima.pojo.CheckItem">
         update t_checkitem
         <set>
-            <if test="code != null">
-                code=#{code},
-            </if>
-            <if test="name != null">
-                name=#{name},
-            </if>
-            <if test="sex != null">
-                sex=#{sex},
-            </if>
-            <if test="age != null">
-                age=#{age},
-            </if>
-            <if test="price != null">
-                price=#{price},
-            </if>
-            <if test="type != null">
-                type=#{type},
-            </if>
-            <if test="remark != null">
-                remark=#{remark},
-            </if>
-            <if test="attention != null">
-                attention=#{attention},
-            </if>
+            code=#{code},
+            name=#{name},
+            sex=#{sex},
+            age=#{age},
+            price=#{price},
+            type=#{type},
+            remark=#{remark},
+            attention=#{attention}
         </set>
         <where>
             id=#{id}
