@@ -13,7 +13,7 @@
     </insert>
 
     <!--根据日期查询-->
-    <select id="findByDate" parameterType="Date" resultType="long">
+    <select id="findByDate" parameterType="Date" resultType="int">
       select count(id) from t_order where orderDate = #{date}
     </select>
 
@@ -24,6 +24,21 @@
 
     <select id="getOrderById" parameterType="int" resultType="map">
       select * from t_order where id=#{id}
+    </select>
+    <!--根据条件查询订单-->
+    <select id="findOrderInfoByCondition" resultType="int" parameterType="map">
+        SELECT * FROM t_order WHERE orderDate BETWEEN #{startDate} and #{endDate}
+        <if test="orderStatus != null || orderStatus != ''">
+            and orderStatus=#{orderStatus}
+        </if>
+    </select>
+
+    <select id="getTotalCount" resultType="int">
+        select count(1) from t_order
+    </select>
+
+    <select id="getSetmealCountById" resultType="int" parameterType="int">
+      select count(1) from t_order WHERE setmeal_id=#{id}
     </select>
 
 </mapper>

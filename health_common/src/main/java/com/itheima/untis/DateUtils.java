@@ -284,11 +284,18 @@ public class DateUtils {
         calendar.set(Calendar.DAY_OF_MONTH,1);
         return calendar.getTime();
     }
+    //获得本月最后一日的日期
+    public static Date getLastDay4ThisMonth(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        return calendar.getTime();
+    }
 
     public static void main(String[] args) {
         try {
-            System.out.println("本周一" + parseDate2String(getThisWeekMonday()));
-            System.out.println("本月一日" + parseDate2String(getFirstDay4ThisMonth()));
+          /*  System.out.println("本周一" + parseDate2String(getThisWeekMonday()));
+            System.out.println("本月一日" + parseDate2String(getFirstDay4ThisMonth()));*/
+            System.out.println("本月最后一日" + parseDate2String(getLastDay4ThisMonth()));
         } catch (Exception e) {
             e.printStackTrace();
         }

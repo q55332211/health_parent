@@ -31,4 +31,6 @@ public interface SetmealService {
     Setmeal findBaseSemealById(Integer id);
 
     List<Map<String, Object>> findSetmealCount();
+
+    List<Map<String, Object>>  getHotSetmeal();
 }

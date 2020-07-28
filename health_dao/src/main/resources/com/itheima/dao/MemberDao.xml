@@ -20,8 +20,26 @@
       select * from t_member where id=#{id}
     </select>
 
+    <!--查询当前月会员总数-->
     <select id="getCountByMoth" parameterType="string" resultType="int">
       select count(1) from t_member where regTime &lt; #{month}
     </select>
+    <!--根据日期查询当日新会员-->
+    <select id="getNewMemeberByDate" resultType="int" parameterType="date">
+        select count(1) from  t_member where regTime =#{date}
+    </select>
+
+    <select id="getTotalMember" resultType="int">
+         select count(1) from  t_member
+    </select>
+
+    <select id="getThisMothMember" resultType="int" parameterType="map">
+        select count(id) from t_member where regTime between #{stratDate} and #{endDate}
+    </select>
+
+    <select id="getMemberByWeek" resultType="int" parameterType="map">
+        select count(id) from t_member where regTime between #{monday} and #{sunday}
+    </select>
+
 
 </mapper>

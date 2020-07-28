@@ -93,6 +93,39 @@ public class SetmealServiceImpl implements SetmealService {
         return this.setmealDao.findSetmealCount();
     }
 
+    @Autowired
+    private OrderService orderService;
+
+    /**
+     * 查询热门套餐
+     *
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> getHotSetmeal() {
+        List<Map<String, Object>> list = new ArrayList<>();
+        //查询热门前五条
+        List<Map<String, Object>> hotSetmeal = this.setmealDao.getHotSetmeal();
+        //     List<Map<String,Object>> setmeals = this.setmealDao.getHotSetmeal();
+        //查询订单总数
+        Integer total = orderService.getTotalCount();
+        // Map<String, Object> map = new HashMap();
+        if (null == total || total <= 0) {
+            return null;
+        }
+        //查询每个订单预约数
+        for (Map<String, Object> setmeal : hotSetmeal) {
+            Map<String, Object> map = new HashMap();
+            float count = Integer.parseInt(setmeal.get("count").toString());
+            float proportion = count / total;
+            map.put("proportion", proportion);
+            map.put("name", setmeal.get("name").toString());
+            map.put("setmeal_count", count);
+            list.add(map);
+        }
+        return list;
+    }
+
 
     public Setmeal toFor(Integer id) {
         //通过套餐id查询检查组

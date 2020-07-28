@@ -3,6 +3,7 @@ package com.itheima.service;
 import com.itheima.entity.Result;
 import com.itheima.pojo.Order;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -13,7 +14,13 @@ public interface OrderService {
 
     Result sumbit(Map map) throws Exception;
 
-    boolean findByDate(String date);
+    Integer findByDate(Date date);
 
     Map<String, Object> getOrderById(Integer id);
+
+    Integer findOrderInfoByCondition(String stratDate, String endtDate, String orderStatus);
+
+    Integer getTotalCount();
+    //根据Setmetl ID查询订单数
+    Integer getSetmealCountById(Integer id);
 }

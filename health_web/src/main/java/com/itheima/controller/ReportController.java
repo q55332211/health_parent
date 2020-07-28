@@ -79,5 +79,16 @@ public class ReportController {
         return new Result(false, MessageConstant.GET_SETMEAL_COUNT_REPORT_FAIL);
     }
 
+    @RequestMapping("/getBusinessReportData")
+    public Result getBusinessReportData() {
+        try {
+            Map<String, Object> data = this.reportService.getBusinessData();
+            return new Result(true, MessageConstant.GET_BUSINESS_REPORT_SUCCESS, data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new Result(false, MessageConstant.GET_SETMEAL_COUNT_REPORT_FAIL);
+    }
+
 
 }

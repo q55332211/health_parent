@@ -37,6 +37,12 @@
         SELECT count(1) value,t_setmeal.name FROM t_setmeal JOIN t_order  ON t_setmeal.id = t_order.setmeal_id  GROUP BY t_setmeal.id
     </select>
 
+    <select id="getHotSetmeal" resultMap="SetmalResult">
+         select t_setmeal.name,count(1) count  from t_order JOIN t_setmeal on t_order.setmeal_id=t_setmeal.id group by setmeal_id ORDER BY count desc
+    </select>
 
-
+    <resultMap id="SetmalResult" type="map">
+        <result property="name" column="name"></result>
+        <result property="count" column="count"></result>
+    </resultMap>
 </mapper>

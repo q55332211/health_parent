@@ -7,6 +7,8 @@ import com.itheima.dao.MemberDao;
 import com.itheima.pojo.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -45,5 +47,37 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Integer getCountByMoth(String month) {
         return this.memberdao.getCountByMoth(month);
+    }
+
+    /**
+     * 查询当天新会员
+     *
+     * @param date
+     * @return
+     */
+    @Override
+    public Integer getNewMemeberByDate(Date date) {
+        return this.memberdao.getNewMemeberByDate(date);
+    }
+
+    @Override
+    public Integer getTotalMember() {
+        return this.memberdao.getTotalMember();
+    }
+
+    @Override
+    public Integer getThisMothMember(String stratDate, String endDate) {
+        Map<String, String> map = new HashMap<>();
+        map.put("stratDate", stratDate);
+        map.put("endDate", endDate);
+        return this.memberdao.getThisMothMember(map);
+    }
+
+    @Override
+    public Integer getMemberByWeek(String monday, String sunday) {
+        Map<String, String> map = new HashMap<>();
+        map.put("monday", monday);
+        map.put("sunday", sunday);
+        return this.memberdao.getMemberByWeek(map);
     }
 }

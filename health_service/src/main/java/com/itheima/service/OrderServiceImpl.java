@@ -13,6 +13,7 @@ import com.itheima.untis.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -88,10 +89,15 @@ public class OrderServiceImpl implements OrderService {
         return new Result(true, MessageConstant.ORDER_SUCCESS, order);
     }
 
+    /**
+     * 查询当日新会员数
+     *
+     * @param date
+     * @return
+     */
     @Override
-    public boolean findByDate(String date) {
-        long count = this.orderDao.findByDate(date);
-        return 1 == count;
+    public Integer findByDate(Date date) {
+        return this.orderDao.findByDate(date);
     }
 
     /**
@@ -111,5 +117,33 @@ public class OrderServiceImpl implements OrderService {
         map.put("member", member.getName());
         return map;
     }
+
+    /**
+     * 根据时间以及状态查询订单order信息
+     *
+     * @param stratDate
+     * @param endtDate
+     * @param orderStatus
+     * @return
+     */
+    @Override
+    public Integer findOrderInfoByCondition(String stratDate, String endtDate, String orderStatus) {
+        Map<String, String> map = new HashMap<>();
+        map.put("stratDate", stratDate);
+        map.put("endtDate", endtDate);
+        map.put("orderStatus", orderStatus);
+        return this.orderDao.findOrderInfoByCondition(map);
+    }
+
+    @Override
+    public Integer getTotalCount() {
+        return this.orderDao.getTotalCount();
+    }
+
+    @Override
+    public Integer getSetmealCountById(Integer id) {
+        return this.orderDao.getSetmealCountById(id);
+    }
+
 
 }
