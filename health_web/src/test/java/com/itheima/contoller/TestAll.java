@@ -44,7 +44,7 @@ public class TestAll {
         List<Setmeal> al1 = setmealService.findAll();
         //  Setmeal all = (Setmeal) all1;
         String json = JSONObject.toJSONString(al1);
-        System.out.println(json);
+       // System.out.println(json);
     }
 
     /**

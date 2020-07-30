@@ -30,14 +30,13 @@ public class TestService {
     @Test
     public void testfindUserByName() {
         User user = userdao.findUserByName("admin");
-        System.out.println();
     }
 
 
     @Test
     public void testFindRolesById() {
         Set<Role> roles = userdao.findRolesById(2);
-        System.out.println();
+
     }
 
     @Test

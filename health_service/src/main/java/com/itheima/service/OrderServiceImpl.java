@@ -47,12 +47,12 @@ public class OrderServiceImpl implements OrderService {
         OrderSetting orderSetting = this.orderSettingService.getOrderSettingByDate(date);
         //查询是否可以预约
         if (orderSetting == null) {
-            System.out.println(MessageConstant.SELECTED_DATE_CANNOT_ORDER);
+         //   System.out.println(MessageConstant.SELECTED_DATE_CANNOT_ORDER);
             return new Result(false, MessageConstant.SELECTED_DATE_CANNOT_ORDER);
         }
         //查询是否已经约满
         if (orderSetting.getNumber() <= orderSetting.getReservations()) {
-            System.out.println(MessageConstant.ORDER_FULL);
+           // System.out.println(MessageConstant.ORDER_FULL);
             return new Result(false, MessageConstant.ORDER_FULL);
         }
         //查询用户是否已经注册
@@ -67,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
             member.setRegTime(DateUtils.parseString2Date(map.get("orderDate").toString()));
             member.setPhoneNumber((String) map.get("telephone"));
             this.memberService.add(member);
-            System.out.println("用户未注册，自动注册完成");
+           // System.out.println("用户未注册，自动注册完成");
         }
         //防止重复提交
         map.put("memberId", member.getId());
@@ -77,7 +77,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderDate(date);
         long count = this.orderDao.getOrder(order);
         if (count >= 1) {
-            System.out.println(MessageConstant.HAS_ORDERED);
+         //   System.out.println(MessageConstant.HAS_ORDERED);
             return new Result(false, MessageConstant.HAS_ORDERED);
         }
         //已经注册直接创建订单order   //在订单表添加一条预约信息

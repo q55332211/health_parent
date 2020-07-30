@@ -84,4 +84,8 @@
           where t_setmeal_checkgroup.setmeal_id=#{sid}
     </select>
 
+    <select id="findCheckGroupIdBycheckItemId" resultType="int" parameterType="int" >
+      select  count(1) FROM t_checkgroup_checkitem where checkitem_id = #{id}
+    </select>
+
 </mapper>

@@ -33,4 +33,8 @@ public interface SetmealService {
     List<Map<String, Object>> findSetmealCount();
 
     List<Map<String, Object>>  getHotSetmeal();
+
+    List<Integer> findCheckgroupIdsBySetmealId(Integer id);
+
+    void update(Integer[] checkgroupIds, Setmeal setmeal);
 }

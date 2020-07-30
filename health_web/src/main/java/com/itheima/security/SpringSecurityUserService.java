@@ -46,7 +46,7 @@ public class SpringSecurityUserService implements UserDetailsService {
         for (Permission permission : permissions) {
             list.add(new SimpleGrantedAuthority(permission.getKeyword()));
         }
-        System.out.println("success");
+      //  System.out.println("success");
         return new User(username, dbUser.getPassword(), list);
     }
 }

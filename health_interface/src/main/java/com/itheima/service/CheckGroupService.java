@@ -33,4 +33,6 @@ public interface CheckGroupService {
 
 
     List<Integer> getCheckGroupIds(Integer id);
+
+    Integer findCheckGroupIdBycheckItemId(Integer id);
 }

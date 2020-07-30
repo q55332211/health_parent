@@ -25,7 +25,7 @@ public class CheckItemServiceImpl implements CheckItemService {
     @Override
     public void add(CheckItem checkItem) {
         checkItemDao.save(checkItem);
-        System.out.println(checkItem.toString());
+        //System.out.println(checkItem.toString());
     }
 
     /**

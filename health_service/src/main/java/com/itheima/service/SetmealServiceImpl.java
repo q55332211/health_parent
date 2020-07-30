@@ -126,6 +126,25 @@ public class SetmealServiceImpl implements SetmealService {
         return list;
     }
 
+    @Override
+    public List<Integer> findCheckgroupIdsBySetmealId(Integer id) {
+        return this.setmealDao.findCheckgroupIdsBySetmealId(id);
+    }
+
+    @Override
+    public void update(Integer[] checkgroupIds, Setmeal setmeal) {
+        //根据sid删除原来的关联
+        this.setmealDao.deleteCheckGroupAndSetmealBySid(setmeal.getId());
+        //批量插入新的关联值
+        Map<String, Object> params = new HashMap<>();
+        List<Integer> ids = Arrays.asList(checkgroupIds);
+        params.put("sid", setmeal.getId());
+        params.put("ids", ids);
+        this.setmealDao.insertCheckGroups(params);
+        //更新套餐数据
+        this.setmealDao.updateSetmeal(setmeal);
+    }
+
 
     public Setmeal toFor(Integer id) {
         //通过套餐id查询检查组
@@ -137,7 +156,7 @@ public class SetmealServiceImpl implements SetmealService {
         }
         Setmeal setmeal = this.setmealDao.findById(id);
         setmeal.setCheckGroups(checkGroups);
-        System.out.println(JSONObject.toJSONString(setmeal));
+       // System.out.println(JSONObject.toJSONString(setmeal));
         return setmeal;
     }
 

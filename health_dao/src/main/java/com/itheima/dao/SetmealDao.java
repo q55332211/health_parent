@@ -28,4 +28,13 @@ public interface SetmealDao {
     List<Map<String, Object>> findSetmealCount();
 
     List<Map<String,Object>> getHotSetmeal();
+
+    List<Integer> findCheckgroupIdsBySetmealId(Integer id);
+
+    void deleteCheckGroupAndSetmealBySid(Integer id);
+
+    void insertCheckGroups(Map<String, Object> params);
+
+    void updateSetmeal(Setmeal setmeal);
+
 }

@@ -41,6 +41,36 @@
          select t_setmeal.name,count(1) count  from t_order JOIN t_setmeal on t_order.setmeal_id=t_setmeal.id group by setmeal_id ORDER BY count desc
     </select>
 
+    <select id="findCheckgroupIdsBySetmealId" parameterType="int" resultType="int">
+        SELECT t_setmeal_checkgroup.checkgroup_id FROM t_setmeal_checkgroup
+          WHERE t_setmeal_checkgroup.setmeal_id=#{id}
+    </select>
+
+    <delete id="deleteCheckGroupAndSetmealBySid" parameterType="int">
+        delete  FROM  t_setmeal_checkgroup WHERE t_setmeal_checkgroup.setmeal_id = #{sid}
+    </delete>
+
+    <!--批量插入-->
+    <insert id="insertCheckGroups" parameterType="map">
+        insert into t_setmeal_checkgroup(setmeal_id,checkgroup_id)
+        VALUES
+        <foreach collection="ids" item="id" separator=",">(#{sid},#{id})
+        </foreach>
+    </insert>
+    <!--根据id更新setmeal-->
+    <update id="updateSetmeal" parameterType="com.itheima.pojo.Setmeal">
+        update t_setmeal
+      set code=#{code},
+       helpCode=#{helpCode},
+       sex=#{sex},
+       age=#{age},
+       price=#{price},
+       remark=#{remark},
+       attention=#{attention},
+       img=#{img}
+        where id=#{id}
+    </update>
+
     <resultMap id="SetmalResult" type="map">
         <result property="name" column="name"></result>
         <result property="count" column="count"></result>

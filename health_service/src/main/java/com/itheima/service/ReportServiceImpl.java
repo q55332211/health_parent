@@ -4,10 +4,19 @@ import com.alibaba.dubbo.config.annotation.Service;
 
 import com.itheima.pojo.Order;
 import com.itheima.untis.DateUtils;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -78,7 +87,7 @@ public class ReportServiceImpl implements ReportService {
         //本周新会员数     thisWeekNewMember :0, 用in 好像是比用符号好点  用 weeki 最好
         Integer thisWeekNewMember = this.memberService.getMemberByWeek(monday, sunday);
 
-       /**  --------------------------------订单数据处理------------------------------------------------- **/
+        /**  --------------------------------订单数据处理------------------------------------------------- **/
         //今日预约数             todayOrderNumber :0,
         Integer todayOrderNumber = this.orderService.findByDate(today);
         // 今日就诊数            todayVisitsNumber :0,
@@ -109,4 +118,8 @@ public class ReportServiceImpl implements ReportService {
         data.put("hotSetmeal", hotSetmeal);
         return data;
     }
+
+
+
+
 }

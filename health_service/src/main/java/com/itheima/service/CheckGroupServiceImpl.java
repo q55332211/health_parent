@@ -107,6 +107,11 @@ public class CheckGroupServiceImpl implements CheckGroupService {
         return this.checkGroupDao.queryCheckGroupIds(id);
     }
 
+    @Override
+    public Integer findCheckGroupIdBycheckItemId(Integer id) {
+        return this.checkGroupDao.findCheckGroupIdBycheckItemId(id);
+    }
+
     /**
      * 设置检查项
      *

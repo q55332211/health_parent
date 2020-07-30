@@ -6,6 +6,7 @@ import com.itheima.entity.PageResult;
 import com.itheima.entity.QueryPageBean;
 import com.itheima.entity.Result;
 import com.itheima.pojo.CheckItem;
+import com.itheima.service.CheckGroupService;
 import com.itheima.service.CheckItemService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,12 +31,15 @@ public class CheckItemController {
     @Reference
     private CheckItemService checkItemService;
 
+    @Reference
+    private CheckGroupService checkGroupService;
+
     @RequestMapping("/add")
     @ResponseBody
     public Result add(@RequestBody CheckItem checkItem) {
         try {
             checkItemService.add(checkItem);
-            System.out.println("save");
+          //  System.out.println("save");
         } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, MessageConstant.ADD_CHECKITEM_FAIL);
@@ -76,11 +80,15 @@ public class CheckItemController {
     @ResponseBody
     public Result delete(@RequestBody CheckItem checkItem) {
         try {
-            checkItemService.delete(checkItem);
-            return new Result(true, MessageConstant.DELETE_CHECKITEM_SUCCESS);
+            Integer count = this.checkGroupService.findCheckGroupIdBycheckItemId(checkItem.getId());
+            if (null != count && count > 0) {
+                //查询是否已经被检查组使用。如果被使用 返回已经被使用
+                checkItemService.delete(checkItem);
+                return new Result(true, MessageConstant.DELETE_CHECKITEM_SUCCESS);
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("数据查询异常");
+           // System.out.println("数据查询异常");
         }
         return new Result(false, MessageConstant.DELETE_CHECKITEM_FAIL);
     }
@@ -93,7 +101,7 @@ public class CheckItemController {
             return new Result(true, MessageConstant.DELETE_CHECKITEM_SUCCESS, list);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("数据查询异常");
+           // System.out.println("数据查询异常");
         }
         return new Result(false, MessageConstant.DELETE_CHECKITEM_FAIL);
     }

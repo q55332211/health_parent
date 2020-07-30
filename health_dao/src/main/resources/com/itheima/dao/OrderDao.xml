@@ -27,7 +27,7 @@
     </select>
     <!--根据条件查询订单-->
     <select id="findOrderInfoByCondition" resultType="int" parameterType="map">
-        SELECT * FROM t_order WHERE orderDate BETWEEN #{startDate} and #{endDate}
+        SELECT count(id) FROM t_order WHERE orderDate BETWEEN #{startDate} and #{endDate}
         <if test="orderStatus != null || orderStatus != ''">
             and orderStatus=#{orderStatus}
         </if>

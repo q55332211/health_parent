@@ -6,9 +6,17 @@ import com.itheima.entity.Result;
 import com.itheima.pojo.Setmeal;
 import com.itheima.service.ReportService;
 import com.itheima.service.SetmealService;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -88,6 +96,65 @@ public class ReportController {
             e.printStackTrace();
         }
         return new Result(false, MessageConstant.GET_SETMEAL_COUNT_REPORT_FAIL);
+    }
+
+    /**
+     * 导出运营统计数据报表
+     */
+    @GetMapping("/exportBusinessReport")
+    public void exportBusinessReport(HttpServletRequest req, HttpServletResponse res) {
+        //获得模板文件
+        String templatePath = req.getSession().getServletContext().getRealPath("/static/template/report_template.xlsx");
+        try {
+            //从res中获取输出流
+            OutputStream os = res.getOutputStream();
+            //创建工作文件
+            XSSFWorkbook xssfWorkbook = new XSSFWorkbook(templatePath);
+            //获得工作表
+            XSSFSheet sheet = xssfWorkbook.getSheetAt(0);
+            //获得后台运维数据
+            Map<String, Object> businessData = this.reportService.getBusinessData();
+            sheet.getRow(2).getCell(5).setCellValue(businessData.get("reporeDate").toString());
+
+            /**-------------------------会员--------------------------------------*/
+            sheet.getRow(4).getCell(5).setCellValue((Integer) businessData.get("todayNewMember"));
+            sheet.getRow(4).getCell(7).setCellValue((Integer) businessData.get("totalMember"));
+            sheet.getRow(5).getCell(5).setCellValue((Integer) businessData.get("thisWeekNewMember"));
+            sheet.getRow(5).getCell(7).setCellValue((Integer) businessData.get("thisMonthNewMember"));
+            /**-------------------------预约--------------------------------------*/
+            sheet.getRow(7).getCell(5).setCellValue((Integer) businessData.get("todayOrderNumber"));
+            sheet.getRow(7).getCell(7).setCellValue((Integer) businessData.get("todayVisitsNumber"));
+            sheet.getRow(8).getCell(5).setCellValue((Integer) businessData.get("thisWeekOrderNumber"));
+            sheet.getRow(8).getCell(7).setCellValue((Integer) businessData.get("thisWeekVisitsNumber"));
+            sheet.getRow(9).getCell(5).setCellValue((Integer) businessData.get("thisMonthOrderNumber"));
+            sheet.getRow(9).getCell(7).setCellValue((Integer) businessData.get("thisMonthVisitsNumber"));
+            /**-------------------------热门套餐-----------------------------------*/
+            // 热门套餐
+            List<Map<String, Object>> hotSetmeal = (List<Map<String, Object>>) businessData.get("hotSetmeal");
+            int row = 12;
+            for (Map<String, Object> setmealMap : hotSetmeal) {
+                sheet.getRow(row).getCell(4).setCellValue((String) setmealMap.get("name"));
+                sheet.getRow(row).getCell(5).setCellValue((Double) setmealMap.get("setmeal_count"));
+                Double proportion = (Double) setmealMap.get("proportion");
+                sheet.getRow(row).getCell(6).setCellValue(proportion.doubleValue());
+                sheet.getRow(row).getCell(7).setCellValue((String) setmealMap.get("remark"));
+                row++;
+            }
+            /**-------------------------写入到reponse-----------------------------------*/
+            // 工作簿写给reponse输出流
+            res.setContentType("application/vnd.ms-excel");
+            String filename = "运营统计数据报表.xlsx";
+            // 设置UTF-8编码Strng 解决下载的文件名 中文乱码
+            filename = new String(filename.getBytes(), "ISO-8859-1");
+            // 设置头信息，告诉浏览器，是带附件的，文件下载
+            res.setHeader("Content-Disposition", "attachement;filename=" + filename);
+            xssfWorkbook.write(os);
+            os.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 
