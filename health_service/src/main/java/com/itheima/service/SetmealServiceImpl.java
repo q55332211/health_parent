@@ -59,6 +59,11 @@ public class SetmealServiceImpl implements SetmealService {
 
     }
 
+    /**
+     * 查询所有
+     *
+     * @return
+     */
     @Override
     public List<Setmeal> findAll() {
         return this.setmealDao.findAll();
@@ -66,17 +71,28 @@ public class SetmealServiceImpl implements SetmealService {
 
     @Override
     public Setmeal findById(Integer id) {
+
+
         return toFor(id);
     }
 
+    /**
+     * 优化性能值对id查询套餐所有信息
+     *
+     * @param sid
+     * @return
+     */
     @Override
     public Map<String, Object> queryById(Integer sid) {
+
+        //根据使用
+        Setmeal setmeal = this.setmealDao.findByIdPuls(sid);
+
         //通过套餐id查询检查组
         Map<String, Object> data = new HashMap();
         List<Integer> checkGroupIds = this.checkGroupService.getCheckGroupIds(sid);
-
         List<CheckItem> checkItems = this.checkItemService.queryByCheckGroupIds(checkGroupIds);
-        Setmeal setmeal = this.setmealDao.findById(sid);
+     //   Setmeal setmeal = this.setmealDao.findById(sid);
         data.put("setmeal", setmeal);
         data.put("checkItems", checkItems);
         data.put("total", checkItems.size());
@@ -146,6 +162,12 @@ public class SetmealServiceImpl implements SetmealService {
     }
 
 
+    /**
+     * 使用for 查询 效率最低
+     *
+     * @param id
+     * @return
+     */
     public Setmeal toFor(Integer id) {
         //通过套餐id查询检查组
         List<CheckGroup> checkGroups = checkGroupService.queryCheckGroupsBySid(id);
@@ -156,7 +178,7 @@ public class SetmealServiceImpl implements SetmealService {
         }
         Setmeal setmeal = this.setmealDao.findById(id);
         setmeal.setCheckGroups(checkGroups);
-       // System.out.println(JSONObject.toJSONString(setmeal));
+        // System.out.println(JSONObject.toJSONString(setmeal));
         return setmeal;
     }
 

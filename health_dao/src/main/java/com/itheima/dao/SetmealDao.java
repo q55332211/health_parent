@@ -37,4 +37,7 @@ public interface SetmealDao {
 
     void updateSetmeal(Setmeal setmeal);
 
+    List<String> getImgs();
+
+    Setmeal findByIdPuls(Integer sid);
 }

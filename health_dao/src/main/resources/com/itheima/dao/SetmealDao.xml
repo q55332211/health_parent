@@ -59,20 +59,66 @@
     </insert>
     <!--根据id更新setmeal-->
     <update id="updateSetmeal" parameterType="com.itheima.pojo.Setmeal">
-        update t_setmeal
-      set code=#{code},
-       helpCode=#{helpCode},
-       sex=#{sex},
-       age=#{age},
-       price=#{price},
-       remark=#{remark},
-       attention=#{attention},
-       img=#{img}
+      update t_setmeal
+          set code=#{code},
+           helpCode=#{helpCode},
+           sex=#{sex},
+           age=#{age},
+           price=#{price},
+           remark=#{remark},
+           attention=#{attention},
+           img=#{img}
         where id=#{id}
     </update>
+
+
+    <select id="getImgs" resultType="string">
+        select img from t_setmeal
+    </select>
+
+    <select id="findByIdPuls" resultMap="setmealDetailMap" parameterType="int">
+        select
+              s.*,
+              sg.checkgroup_id, cg.name checkgroup_name, cg.remark as checkgroup_remark,
+              cc.checkitem_id, ci.name checkitem_name
+          From
+              t_setmeal s, t_setmeal_checkgroup sg,
+              t_checkgroup cg, t_checkgroup_checkitem cc,
+              t_checkitem ci
+          where
+              s.id=sg.setmeal_id and sg.checkgroup_id=cg.id
+              and cg.id=cc.checkgroup_id and cc.checkitem_id=ci.id
+              and s.id=#{id}
+    </select>
+
 
     <resultMap id="SetmalResult" type="map">
         <result property="name" column="name"></result>
         <result property="count" column="count"></result>
     </resultMap>
+
+
+    <resultMap id="setmealDetailMap" type="setmeal">
+        <id property="id" column="id"/>
+        <result property="name" column="name" />
+        <result property="code" column="code" />
+        <result property="helpCode" column="helpCode" />
+        <result property="sex" column="sex" />
+        <result property="age" column="age" />
+        <result property="price" column="price" />
+        <result property="remark" column="remark" />
+        <result property="attention" column="attention" />
+        <result property="img" column="img" />
+        <collection property="checkGroups" ofType="com.itheima.pojo.CheckGroup">
+            <id property="id" column="checkgroup_id"/>
+            <result property="name" column="checkgroup_name"/>
+            <result property="remark" column="checkgroup_remark"/>
+            <collection property="checkItems" ofType="com.itheima.pojo.CheckItem">
+                <id property="id" column="checkitem_id"/>
+                <result property="name" column="checkitem_name"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+
 </mapper>

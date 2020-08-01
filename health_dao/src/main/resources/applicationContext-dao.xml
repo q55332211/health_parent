@@ -31,11 +31,11 @@
         <property name="configLocation" value="classpath:SqlMapConfig.xml"/>
         <property name="typeAliasesPackage" value="com.itheima.pojo"/>
         <!--开启驼峰命名  不能与mybatis文件同时指定 -->
-      <!--  <property name="configuration">
-            <bean class="org.apache.ibatis.session.Configuration">
-                <property name="mapUnderscoreToCamelCase" value="true"/>
-            </bean>
-        </property>-->
+        <!--<property name="configuration">
+              <bean class="org.apache.ibatis.session.Configuration">
+                  <property name="mapUnderscoreToCamelCase" value="true"/>
+              </bean>
+          </property>-->
     </bean>
     <!--批量扫描接口生成代理对象-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">

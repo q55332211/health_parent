@@ -35,6 +35,10 @@
             <artifactId>httpcore</artifactId>
             <version>4.4.13</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo</artifactId>
+        </dependency>
     </dependencies>
 
 
@@ -42,6 +46,7 @@
 
 
     <build>
+        <!--<defaultGoal>deploy</defaultGoal>-->
         <plugins>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>

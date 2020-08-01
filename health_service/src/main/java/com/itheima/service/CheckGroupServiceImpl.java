@@ -112,6 +112,11 @@ public class CheckGroupServiceImpl implements CheckGroupService {
         return this.checkGroupDao.findCheckGroupIdBycheckItemId(id);
     }
 
+    @Override
+    public List<CheckGroup> getCheckGroups(Integer sid) {
+        return null;
+    }
+
     /**
      * 设置检查项
      *

@@ -444,7 +444,7 @@
                 //   console.info(row);
                 // 还是需要根据id获取最新数据
                 axios.get("/setmeal/getSetmealById.do?id=" + row.id).then((res) => {
-                    if(res.data.flag){
+                    if (res.data.flag) {
                         this.formData = res.data.data;
                         this.imageUrl = res.data.data.img;
                     }
@@ -474,11 +474,12 @@
                         this.$message.error(response.data.message);
                     }
                 })
-                this.timer = setTimeout(()=>{   //设置延迟执行
+                this.resetForm();
+                this.timer = setTimeout(() => {   //设置延迟执行
                     this.activeName = 'first';
                     this.dialogFormVisible4Edit = false;
                     this.findPage();
-                },800);
+                }, 500);
 
             }
 
