@@ -32,7 +32,7 @@
         <tx:attributes>
             <tx:method name="query*" read-only="true"/>
             <tx:method name="find*" read-only="true"/>
-            <tx:method name="select*" read-only="true"/>
+            <tx:method name="select*" read-only="true"/>			
             <tx:method name="*" read-only="false" propagation="REQUIRED"/>
         </tx:attributes>
     </tx:advice>
