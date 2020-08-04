@@ -2,6 +2,7 @@ package com.itheima.dao;
 
 import com.github.pagehelper.Page;
 import com.itheima.pojo.CheckItem;
+import com.itheima.vo.CheckItemVo;
 
 import java.util.List;
 
@@ -28,4 +29,5 @@ public interface CheckItemDao {
     //根据id数组查询
     List<CheckItem> queryByGids(List<Integer>  checkGroupIds);
 
+    List<CheckItemVo> getCheckItemVoInCheckGroupIds(List<Integer> groupIds);
 }

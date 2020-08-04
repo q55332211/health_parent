@@ -11,6 +11,7 @@ import com.itheima.entity.MessageConstant;
 import com.itheima.entity.PageResult;
 import com.itheima.entity.QueryPageBean;
 import com.itheima.entity.Result;
+import com.itheima.health.exception.HealthException;
 import com.itheima.pojo.Setmeal;
 import com.itheima.service.SetmealService;
 
@@ -39,28 +40,18 @@ public class SetmealControlle {
     @RequestMapping("/findPage")
     @ResponseBody
     public Result findPage(@RequestBody QueryPageBean queryPageBean) {
-        try {
-            PageResult page = this.setmealService.findPage(queryPageBean);
-            return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS, page);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new Result(false, MessageConstant.QUERY_SETMEALLIST_FAIL);
+        PageResult page = this.setmealService.findPage(queryPageBean);
+        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS, page);
     }
 
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     @ResponseBody
     public Result addSetmeal(Integer[] checkgroupIds, @RequestBody Setmeal setmeal) {
-        try {
-            //  System.out.println(checkgroupIds);
-            this.setmealService.addSetmeal(setmeal, checkgroupIds);
-            return new Result(true, MessageConstant.ADD_SETMEAL_SUCCESS);
-        } catch (Exception e) {
-            e.printStackTrace();
+        //  System.out.println(checkgroupIds);
+        this.setmealService.addSetmeal(setmeal, checkgroupIds);
+        return new Result(true, MessageConstant.ADD_SETMEAL_SUCCESS);
 
-        }
-        return new Result(false, MessageConstant.ADD_MEMBER_FAIL);
     }
 
 
@@ -115,7 +106,7 @@ public class SetmealControlle {
                 return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS, setmeal);
             }
         }
-        return new Result(false, MessageConstant.QUERY_SETMEAL_FAIL);
+        throw new HealthException(MessageConstant.QUERY_SETMEAL_FAIL);
     }
 
 }

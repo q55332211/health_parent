@@ -3,6 +3,7 @@ package com.itheima.dao;
 import com.github.pagehelper.Page;
 import com.itheima.pojo.CheckItem;
 import com.itheima.pojo.Setmeal;
+import com.itheima.vo.SetmealVo;
 
 import java.util.List;
 import java.util.Map;
@@ -40,4 +41,6 @@ public interface SetmealDao {
     List<String> getImgs();
 
     Setmeal findByIdPuls(Integer sid);
+
+    SetmealVo getSetmealVoById(Integer id);
 }

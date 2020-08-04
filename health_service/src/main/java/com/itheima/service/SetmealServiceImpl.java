@@ -11,8 +11,15 @@ import com.itheima.entity.QueryPageBean;
 import com.itheima.pojo.CheckGroup;
 import com.itheima.pojo.CheckItem;
 import com.itheima.pojo.Setmeal;
+import com.itheima.vo.CheckGroupVo;
+import com.itheima.vo.CheckItemVo;
+import com.itheima.vo.SetmealVo;
+import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
+import java.io.*;
 import java.util.*;
 
 
@@ -33,6 +40,14 @@ public class SetmealServiceImpl implements SetmealService {
     @Reference
     private CheckItemService checkItemService;
 
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private FreeMarkerConfigurer freeMarkerConfigurer;
+    @Value("${out_put_path}")
+    private String out_put_path;
+
+
     /**
      * 分页查询
      *
@@ -43,6 +58,7 @@ public class SetmealServiceImpl implements SetmealService {
     public PageResult findPage(QueryPageBean queryPageBean) {
         PageHelper.startPage(queryPageBean.getCurrentPage(), queryPageBean.getPageSize());
         Page<Setmeal> page = setmealDao.selectByCondition(queryPageBean.getQueryString());
+        generateMobileStaticHtml();
         return new PageResult(page.getTotal(), page.getResult());
     }
 
@@ -53,9 +69,9 @@ public class SetmealServiceImpl implements SetmealService {
         //获得套餐id
         Integer id = setmeal.getId();
         //根据套餐id 插入多条 检查组记录
-        //
         setSetmealAndCheckGroup(id, checkgroupIds);
-        return;
+
+        generateMobileStaticHtml();
 
     }
 
@@ -66,14 +82,14 @@ public class SetmealServiceImpl implements SetmealService {
      */
     @Override
     public List<Setmeal> findAll() {
+        generateMobileStaticHtml();
         return this.setmealDao.findAll();
     }
 
     @Override
     public Setmeal findById(Integer id) {
-
-
-        return toFor(id);
+        Setmeal setmeal = this.getSetmealVoById(id);
+        return setmeal;
     }
 
     /**
@@ -86,13 +102,13 @@ public class SetmealServiceImpl implements SetmealService {
     public Map<String, Object> queryById(Integer sid) {
 
         //根据使用
-        Setmeal setmeal = this.setmealDao.findByIdPuls(sid);
-
+        //    Setmeal setmeal = this.setmealDao.findByIdPuls(sid);
+        Setmeal setmeal = getSetmealVoById(sid);
         //通过套餐id查询检查组
         Map<String, Object> data = new HashMap();
         List<Integer> checkGroupIds = this.checkGroupService.getCheckGroupIds(sid);
         List<CheckItem> checkItems = this.checkItemService.queryByCheckGroupIds(checkGroupIds);
-     //   Setmeal setmeal = this.setmealDao.findById(sid);
+        //   Setmeal setmeal = this.setmealDao.findById(sid);
         data.put("setmeal", setmeal);
         data.put("checkItems", checkItems);
         data.put("total", checkItems.size());
@@ -109,8 +125,7 @@ public class SetmealServiceImpl implements SetmealService {
         return this.setmealDao.findSetmealCount();
     }
 
-    @Autowired
-    private OrderService orderService;
+
 
     /**
      * 查询热门套餐
@@ -182,6 +197,28 @@ public class SetmealServiceImpl implements SetmealService {
         return setmeal;
     }
 
+    /***
+     * 增强+++
+     * @param id
+     * @return
+     */
+    private Setmeal getSetmealVoById(Integer id) {
+        Setmeal setmeal = this.setmealDao.findById(id);
+        List<Integer> groupIds = this.setmealDao.findCheckgroupIdsBySetmealId(id);
+        List<CheckGroup> checkGroups = this.checkGroupService.queryCheckGroupsBySid(id);
+        List<CheckItemVo> checkItemVos = this.checkItemService.getCheckItemVoInCheckGroupIds(groupIds);
+        for (CheckGroup checkGroup : checkGroups) {
+            ArrayList<CheckItem> items = new ArrayList<>();
+            for (CheckItemVo itemVo : checkItemVos) {
+                if (itemVo.getCheckGroupId() == checkGroup.getId()) {
+                    items.add(itemVo);
+                }
+                checkGroup.setCheckItems(items);
+            }
+        }
+        setmeal.setCheckGroups(checkGroups);
+        return setmeal;
+    }
 
     //插入id对应的chechgroups 这里为什么要用map 不用怎么写
     private void setSetmealAndCheckGroup(Integer id, Integer[] checkgroupIds) {
@@ -192,6 +229,59 @@ public class SetmealServiceImpl implements SetmealService {
             map.put("checkgroupId", checkgroupId);
             this.setmealDao.setSetmealAndCheckGroup(map);
         }
+    }
+
+
+    /**
+     * 生成 列表及详情静态页面
+     */
+    private void generateMobileStaticHtml() {
+        try {
+            // 套餐列表静态页面
+            generateSetmealListHtml();
+            // 套餐详情静态页面 生成单就行了，为了测试方便，生成所有的
+            generateSetmealDetailHtml();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 生成套餐详情
+     */
+    private void generateSetmealDetailHtml() throws Exception {
+        List<Setmeal> setmealList = setmealDao.findAll();
+        for (Setmeal setmeal : setmealList) {
+            Setmeal setmealDetail = this.getSetmealVoById(setmeal.getId());
+            generateDetailHtml(setmealDetail);
+        }
+    }
+
+
+    private void generateDetailHtml(Setmeal setmealDetail) throws Exception {
+        // 获取模板 套餐列表的模板
+        Template template = freeMarkerConfigurer.getConfiguration().getTemplate("mobile_setmeal_detail.ftl");
+        Map<String, Object> dataMap = new HashMap<String, Object>();
+        dataMap.put("setmeal", setmealDetail);
+        File setmealDetailFile = new File(out_put_path, "setmeal_" + setmealDetail.getId() + ".html");
+        template.process(dataMap, new BufferedWriter(new OutputStreamWriter(new FileOutputStream(setmealDetailFile), "utf-8")));
+    }
+
+    /**
+     * 生成套餐列表
+     */
+    private void generateSetmealListHtml() throws Exception {
+        // 获取模板 套餐列表的模板
+        Template template = freeMarkerConfigurer.getConfiguration().getTemplate("mobile_setmeal.ftl");
+        // 获取数据模型
+        List<Setmeal> setmealList = setmealDao.findAll();
+        Map<String, Object> dataMap = new HashMap<String,Object>();
+        dataMap.put("setmealList", setmealList);
+        // 给模板填充数据 new OutputStreamWriter要指定编码格式，否则中文乱码
+        // 生成的文件 c:/sz89/health_parent/health_mobile/src/main/webapp/pages/m_setmeal.html
+        File setmealListFile = new File(out_put_path, "m_setmeal.html");
+        template.process(dataMap, new BufferedWriter(new OutputStreamWriter(new FileOutputStream(setmealListFile),"utf-8")));
+
     }
 
 

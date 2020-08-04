@@ -7,6 +7,7 @@ import com.itheima.dao.CheckGroupDao;
 import com.itheima.entity.PageResult;
 import com.itheima.entity.QueryPageBean;
 import com.itheima.pojo.CheckGroup;
+import com.itheima.vo.CheckGroupVo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
@@ -103,7 +104,7 @@ public class CheckGroupServiceImpl implements CheckGroupService {
     }
 
     @Override
-    public  List<Integer> getCheckGroupIds(Integer id) {
+    public List<Integer> getCheckGroupIds(Integer id) {
         return this.checkGroupDao.queryCheckGroupIds(id);
     }
 
@@ -113,9 +114,10 @@ public class CheckGroupServiceImpl implements CheckGroupService {
     }
 
     @Override
-    public List<CheckGroup> getCheckGroups(Integer sid) {
-        return null;
+    public List<CheckGroup> getCheckGroupsById(Integer id) {
+        return this.checkGroupDao.getCheckGroupsById(id);
     }
+
 
     /**
      * 设置检查项

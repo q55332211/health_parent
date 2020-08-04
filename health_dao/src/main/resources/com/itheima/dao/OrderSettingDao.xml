@@ -25,7 +25,7 @@
         update t_ordersetting set number =#{number} where orderDate=#{orderDate}
     </update>
 
-    <!--这里涉及到了线程安全问题-->
+    <!--这里涉及到了线程安全问题      因为是单一数据库update有自带行级锁 可以防止  -->
     <update id="exitReservationsByDate" parameterType="java.util.Date">
         update t_ordersetting set reservations = reservations + 1 where orderDate=#{orderDate} and reservations &lt; number
     </update>

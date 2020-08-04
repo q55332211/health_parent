@@ -1,9 +1,13 @@
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.itheima.dao.SetmealDao;
 import com.itheima.dao.UserDao;
 import com.itheima.pojo.Permission;
 import com.itheima.pojo.Role;
+import com.itheima.pojo.Setmeal;
 import com.itheima.pojo.User;
 import com.itheima.service.ReportService;
+import com.itheima.service.SetmealServiceImpl;
+import com.itheima.vo.SetmealVo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,11 @@ public class TestService {
     @Autowired
     private UserDao userdao;
 
+    @Autowired
+    private SetmealDao setmealDao;
+
+    @Autowired
+   // private SetmealServiceImpl setmealService;
 
     @Test
     public void testfindUserByName() {
@@ -56,6 +65,13 @@ public class TestService {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String admin = bCryptPasswordEncoder.encode("admin");
         System.out.println(admin);
+    }
+
+
+    @Test
+    public void testSetmealVo() {
+        // SetmealVo setmealVo = setmealDao.getSetmealVoById(12);
+      //  Setmeal setmeal = setmealService.getSetmealVoById(12);
     }
 
 

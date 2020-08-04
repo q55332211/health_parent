@@ -105,24 +105,15 @@ public class CheckgroupController {
     @ResponseBody
     @RequestMapping(value = "deleteById", method = RequestMethod.POST)
     public Result deleteById(Integer id) {
-        try {
-            checkgroupService.deleteById(id);
-            return new Result(true, MessageConstant.DELETE_CHECKITEM_SUCCESS);
-        } catch (Exception e) {
-            return new Result(false, MessageConstant.DELETE_CHECKITEM_FAIL);
-        }
+        checkgroupService.deleteById(id);
+        return new Result(true, MessageConstant.DELETE_CHECKITEM_SUCCESS);
     }
 
     @RequestMapping(value = "/findAll", method = RequestMethod.GET)
     @ResponseBody
     public Result findAll() {
-        try {
-            List<CheckGroup> data = this.checkgroupService.findAll();
-            return new Result(true, MessageConstant.QUERY_CHECKGROUP_SUCCESS, data);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new Result(false, MessageConstant.QUERY_CHECKGROUP_FAIL);
+        List<CheckGroup> data = this.checkgroupService.findAll();
+        return new Result(true, MessageConstant.QUERY_CHECKGROUP_SUCCESS, data);
     }
 
 

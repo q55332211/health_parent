@@ -3,7 +3,7 @@ package com.itheima.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.entity.MessageConstant;
 import com.itheima.entity.Result;
-import com.itheima.pojo.Setmeal;
+import com.itheima.health.exception.HealthException;
 import com.itheima.service.ReportService;
 import com.itheima.service.SetmealService;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -31,6 +31,8 @@ public class ReportController {
 
     @Reference
     private ReportService reportService;
+    @Reference
+    private SetmealService setmealService;
 
     /***
      * 查询一年内的会员数据
@@ -62,40 +64,30 @@ public class ReportController {
         return new Result(true, MessageConstant.GET_MEMBER_NUMBER_REPORT_SUCCESS, data);
     }
 
-    @Reference
-    private SetmealService setmealService;
 
     @RequestMapping("/getSetmealReport")
     public Result getSetmealReport() {
-        try {
-            Map<String, Object> data = new HashMap<>();
-            //获取所有id
-            List<Map<String, Object>> setmealCount = this.setmealService.findSetmealCount();
-            //遍历list 取出对应setmealName
-            List<String> setmealNames = new ArrayList<>();
-            if (null != setmealCount) {
-                for (Map<String, Object> map : setmealCount) {
-                    setmealNames.add(map.get("name").toString());
-                }
-                data.put("setmealNames", setmealNames);
-                data.put("setmealCount", setmealCount);
-                return new Result(true, MessageConstant.GET_SETMEAL_COUNT_REPORT_SUCCESS, data);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        Map<String, Object> data = new HashMap<>();
+        //获取所有id
+        List<Map<String, Object>> setmealCount = this.setmealService.findSetmealCount();
+        //遍历list 取出对应setmealName
+        List<String> setmealNames = new ArrayList<>();
+        if (null == setmealCount) {
+            throw new HealthException(MessageConstant.GET_SETMEAL_COUNT_REPORT_FAIL);
         }
-        return new Result(false, MessageConstant.GET_SETMEAL_COUNT_REPORT_FAIL);
+        for (Map<String, Object> map : setmealCount) {
+            setmealNames.add(map.get("name").toString());
+        }
+        data.put("setmealNames", setmealNames);
+        data.put("setmealCount", setmealCount);
+        return new Result(true, MessageConstant.GET_SETMEAL_COUNT_REPORT_SUCCESS, data);
     }
 
     @RequestMapping("/getBusinessReportData")
     public Result getBusinessReportData() {
-        try {
-            Map<String, Object> data = this.reportService.getBusinessData();
-            return new Result(true, MessageConstant.GET_BUSINESS_REPORT_SUCCESS, data);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new Result(false, MessageConstant.GET_SETMEAL_COUNT_REPORT_FAIL);
+        Map<String, Object> data = this.reportService.getBusinessData();
+        return new Result(true, MessageConstant.GET_BUSINESS_REPORT_SUCCESS, data);
     }
 
     /**
@@ -153,7 +145,6 @@ public class ReportController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
     }
 

@@ -38,4 +38,6 @@ public interface CheckGroupDao {
     List<Integer> queryCheckGroupIds(Integer sid);
 
     Integer findCheckGroupIdBycheckItemId(Integer id);
+
+    List<CheckGroup> getCheckGroupsById(Integer id);
 }

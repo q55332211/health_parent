@@ -5,6 +5,7 @@ import com.itheima.entity.PageResult;
 import com.itheima.entity.QueryPageBean;
 import com.itheima.pojo.CheckGroup;
 import com.itheima.pojo.Setmeal;
+import com.itheima.vo.CheckGroupVo;
 
 import java.util.List;
 
@@ -36,5 +37,5 @@ public interface CheckGroupService {
 
     Integer findCheckGroupIdBycheckItemId(Integer id);
 
-    List<CheckGroup> getCheckGroups(Integer sid);
+    List<CheckGroup> getCheckGroupsById(Integer id);
 }

@@ -4,9 +4,12 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.itheima.dao.CheckItemDao;
+import com.itheima.entity.MessageConstant;
 import com.itheima.entity.PageResult;
 import com.itheima.entity.QueryPageBean;
+import com.itheima.health.exception.HealthException;
 import com.itheima.pojo.CheckItem;
+import com.itheima.vo.CheckItemVo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -36,8 +39,12 @@ public class CheckItemServiceImpl implements CheckItemService {
      */
     @Override
     public PageResult findPage(QueryPageBean queryPage) {
+        /* throw new HealthException(MessageConstant.QUERY_CHECKITEM_FAIL);*/
         PageHelper.startPage(queryPage.getCurrentPage(), queryPage.getPageSize());
         Page<CheckItem> page = checkItemDao.selectByCondition(queryPage.getQueryString());
+        if (page.getResult() == null) {
+            throw new HealthException(MessageConstant.QUERY_CHECKITEM_FAIL);
+        }
         return new PageResult(page.getTotal(), page.getResult());
     }
 
@@ -58,13 +65,23 @@ public class CheckItemServiceImpl implements CheckItemService {
 
 
     public List<CheckItem> quertByGid(Integer gid) {
-        return this.checkItemDao.queryByGid(gid);
+        if (gid == null) {
+            throw new HealthException("id不存在");
+        }
+        List<CheckItem> itemList = this.checkItemDao.queryByGid(gid);
+        if (null == itemList || itemList.size() <= 0) {
+            throw new HealthException(MessageConstant.QUERY_CHECKITEM_FAIL);
+        }
+        return itemList;
     }
 
     @Override
-    public List<CheckItem> queryByCheckGroupIds(List<Integer>  checkGroupIds) {
+    public List<CheckItem> queryByCheckGroupIds(List<Integer> checkGroupIds) {
         return this.checkItemDao.queryByGids(checkGroupIds);
     }
 
-
+    @Override
+    public List<CheckItemVo> getCheckItemVoInCheckGroupIds(List<Integer> groupIds) {
+        return this.checkItemDao.getCheckItemVoInCheckGroupIds(groupIds);
+    }
 }

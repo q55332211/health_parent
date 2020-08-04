@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -36,56 +37,39 @@ public class OrderSettingController {
      */
     @RequestMapping("/upload")
     @ResponseBody
-    public Result upload(@RequestParam("excelFile") MultipartFile excelFile) {
+    public Result upload(@RequestParam("excelFile") MultipartFile excelFile) throws IOException {
         List<OrderSetting> orderSettingList = new ArrayList<>();
-
-        try {
-            List<String[]> list = POIUtils.readExcel(excelFile);
-            for (String[] strings : list) {
-                OrderSetting orderSetting = new OrderSetting(new Date(strings[0]), Integer.parseInt(strings[1]));
-                orderSettingList.add(orderSetting);
-            }
-            this.orderSettingService.add(orderSettingList);
-            return new Result(true, MessageConstant.IMPORT_ORDERSETTING_SUCCESS);
-        } catch (Exception e) {
-            e.printStackTrace();
+        List<String[]> list = POIUtils.readExcel(excelFile);
+        for (String[] strings : list) {
+            OrderSetting orderSetting = new OrderSetting(new Date(strings[0]), Integer.parseInt(strings[1]));
+            orderSettingList.add(orderSetting);
         }
-        return new Result(false, MessageConstant.IMPORT_ORDERSETTING_FAIL);
+        this.orderSettingService.add(orderSettingList);
+        return new Result(true, MessageConstant.IMPORT_ORDERSETTING_SUCCESS);
     }
 
 
     @RequestMapping(value = "/getOrderSettingByMothe", method = RequestMethod.POST)
     @ResponseBody
     public Result getOrderSettingByMothe(@RequestParam("date") String date) {
-        try {
-            List<OrderSetting> list = this.orderSettingService.findOrderSettingByMothe(date);
-            List<Map<String, Object>> data = new ArrayList<>();
-            for (OrderSetting orderSetting : list) {
-                Map<String, Object> map = new HashMap<>();
-                map.put("date", DateFormatUtil.dateFormatString("dd", orderSetting.getOrderDate()));
-                map.put("number", orderSetting.getNumber());
-                map.put("reservations", orderSetting.getReservations());
-                data.add(map);
-            }
-            return new Result(true, MessageConstant.QUERY_ORDER_SUCCESS, data);
-        } catch (Exception e) {
-            e.printStackTrace();
+        List<OrderSetting> list = this.orderSettingService.findOrderSettingByMothe(date);
+        List<Map<String, Object>> data = new ArrayList<>();
+        for (OrderSetting orderSetting : list) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("date", DateFormatUtil.dateFormatString("dd", orderSetting.getOrderDate()));
+            map.put("number", orderSetting.getNumber());
+            map.put("reservations", orderSetting.getReservations());
+            data.add(map);
         }
-        return new Result(false, MessageConstant.QUERY_ORDER_FAIL);
-
+        return new Result(true, MessageConstant.QUERY_ORDER_SUCCESS, data);
     }
 
 
     @RequestMapping("/exitNumberByDate")
     @ResponseBody
     public Result exitNumberByDate(@RequestBody OrderSetting orderSetting) {
-        try {
-            this.orderSettingService.exitNumberByDate(orderSetting);
-            return new Result(true, MessageConstant.ORDERSETTING_SUCCESS);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new Result(false, MessageConstant.ORDERSETTING_FAIL);
+        this.orderSettingService.exitNumberByDate(orderSetting);
+        return new Result(true, MessageConstant.ORDERSETTING_SUCCESS);
     }
 
 }

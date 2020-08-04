@@ -100,15 +100,15 @@
 
     <resultMap id="setmealDetailMap" type="setmeal">
         <id property="id" column="id"/>
-        <result property="name" column="name" />
-        <result property="code" column="code" />
-        <result property="helpCode" column="helpCode" />
-        <result property="sex" column="sex" />
-        <result property="age" column="age" />
-        <result property="price" column="price" />
-        <result property="remark" column="remark" />
-        <result property="attention" column="attention" />
-        <result property="img" column="img" />
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="helpCode" column="helpCode"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <result property="price" column="price"/>
+        <result property="remark" column="remark"/>
+        <result property="attention" column="attention"/>
+        <result property="img" column="img"/>
         <collection property="checkGroups" ofType="com.itheima.pojo.CheckGroup">
             <id property="id" column="checkgroup_id"/>
             <result property="name" column="checkgroup_name"/>
@@ -120,5 +120,23 @@
         </collection>
     </resultMap>
 
+    <select id="getSetmealVoById" parameterType="int" resultMap="SetmealVo">
+      select t_setmeal.*,t_setmeal_checkgroup.checkgroup_id as checkGroupIds
+        FROM t_setmeal join t_setmeal_checkgroup ON t_setmeal.id=t_setmeal_checkgroup.setmeal_id
+        WHERE t_setmeal.id=#{id}
+    </select>
+    <resultMap id="SetmealVo" type="com.itheima.vo.SetmealVo">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="helpCode" column="helpCode"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <result property="price" column="price"/>
+        <result property="remark" column="remark"/>
+        <result property="attention" column="attention"/>
+        <result property="img" column="img"/>
+        <collection  javaType="int" property="checkGroupIds" column="checkGroupIds"/>
+    </resultMap>
 
 </mapper>

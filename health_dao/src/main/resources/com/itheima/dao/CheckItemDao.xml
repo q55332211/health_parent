@@ -53,7 +53,16 @@
     </select>
 
     <select id="queryByGids" resultType="com.itheima.pojo.CheckItem" parameterType="int">
-        select item.* from t_checkgroup_checkitem as cc JOIN T_checkitem as item
+        select item.* from t_checkgroup_checkitem as cc JOIN t_checkitem as item
+        on item.id=cc.checkitem_id
+        where cc.checkgroup_id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getCheckItemVoInCheckGroupIds" resultType="com.itheima.vo.CheckItemVo" parameterType="int">
+        select item.* ,cc.checkgroup_id as checkGroupId from t_checkgroup_checkitem as cc JOIN t_checkitem as item
         on item.id=cc.checkitem_id
         where cc.checkgroup_id in
         <foreach collection="list" item="id" open="(" close=")" separator=",">
