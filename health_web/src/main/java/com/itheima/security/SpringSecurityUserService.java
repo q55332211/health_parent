@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.pojo.Permission;
 import com.itheima.pojo.Role;
 import com.itheima.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -21,6 +22,7 @@ import java.util.Set;
  * @Date: Create in 16:22 2020/7/26
  */
 @Component
+@Slf4j
 public class SpringSecurityUserService implements UserDetailsService {
 
     @Reference
@@ -46,7 +48,7 @@ public class SpringSecurityUserService implements UserDetailsService {
         for (Permission permission : permissions) {
             list.add(new SimpleGrantedAuthority(permission.getKeyword()));
         }
-      //  System.out.println("success");
+        log.info("login success");
         return new User(username, dbUser.getPassword(), list);
     }
 }
