@@ -1,0 +1,6 @@
+/.idea
+/nice
+*.iml
+target
+/health_common/src/main/java/com/itheima/untis/CosUtils.java
+*/test
